@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MultiDataParser</string>
+    <string name="network_error">Unable to fetch the file</string>
+    <string name="downloading">Downloading</string>
 </resources>

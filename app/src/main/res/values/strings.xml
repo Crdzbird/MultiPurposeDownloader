@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MultiPurposeDownloader</string>
+    <string name="internet_connection_error">No Internet connection</string>
+    <string name="created_at">Created At:</string>
+    <string name="username">Username</string>
+    <string name="likes">%1$d likes</string>
 </resources>

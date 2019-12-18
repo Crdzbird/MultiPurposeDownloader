@@ -1,18 +1,17 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "ni.devotion.multipurposedownloader"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "INFORMATION_URL", "\"https://pastebin.com/\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,15 +20,85 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/main.kotlin_module'
+        exclude 'META-INF/library_release.kotlin_module'
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
+    dataBinding {
+        enabled = true
+    }
+    androidExtensions {
+        experimental = true
+    }
+    compileOptions {
+        targetCompatibility = '1.8'
+        sourceCompatibility = '1.8'
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlin.Experimental"]
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(path: ':multidataparser')
+    implementation Kotlin.kotlin
+    implementation AndroidX.appcompat
+    implementation AndroidX.androidXcore
+    implementation AndroidX.constraintlayout
+    implementation AndroidX.annotations
+    implementation AndroidX.swipeRefresh
+    implementation Retrofit.retrofit
+    implementation Retrofit.retrofitConverter
+    implementation Retrofit.okHttp
+    implementation Libs.timber
+    implementation Libs.vault
+    implementation Libs.rootBeer
+    implementation Libs.typeface
+    implementation Libs.iconicTypeface
+    implementation Libs.fontawesomeTypeface
+    implementation Libs.lottie
+    implementation AndroidX.lifecycleViewmodel
+    implementation AndroidX.lifecycleViewmodelKtx
+
+    implementation Koin.core
+    implementation Koin.android
+    implementation Koin.scope
+    implementation Koin.viewModel
+    implementation Koin.extension
+    kapt Databinding.databinding
+
+    implementation Coroutines.coroutine
+    implementation Coroutines.coroutineAdapter
+
+    implementation GoogleLibs.gson
+    implementation GoogleLibs.material
+
+    implementation Navigation.materialDrawer
+    implementation Navigation.materialDrawerNavigation
+    implementation Navigation.runtime
+    implementation Navigation.fragment
+    implementation Navigation.ui
+
+    implementation Libs.skeleton
+
+    testImplementation Koin.test
+    testImplementation TestLibs.junit
+    androidTestImplementation TestLibs.testrunner
+    androidTestImplementation TestLibs.espresso
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "com.android.support") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "26.+"
+            }
+        }
+    }
 }

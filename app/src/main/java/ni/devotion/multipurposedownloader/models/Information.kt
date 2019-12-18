@@ -9,7 +9,7 @@ data class Information(
     val id: String = "", // sTBdWFQKDHE
     val liked_by_user: Boolean = false, // false
     val likes: Int = 0, // 3
-    val links: LinksX = Links(),
+    val links: LinksX = LinksX(),
     val urls: Urls = Urls(),
     val user: User = User(),
     val width: Int = 0 // 6000

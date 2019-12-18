@@ -21,8 +21,8 @@ import java.util.concurrent.ThreadFactory
 class FileManager(private val context: Context) {
     private var isNoteEnabled = false
     private var channelId = ""
-    private lateinit var onDownloadResultListener: OnDownloadResult
-    private lateinit var notificationManager: NotificationManager
+    lateinit var onDownloadResultListener: OnDownloadResult
+    lateinit var notificationManager: NotificationManager
 
     fun downloadFileFromURL(fileModel: Files, channelId: String, onDownloadResultListener: OnDownloadResult): String? {
         this.channelId = channelId
@@ -69,13 +69,14 @@ class FileManager(private val context: Context) {
         val ext: String = when (fileModel.fileType) {
             FileTypes.TYPE_PDF -> "pdf"
             FileTypes.TYPE_DOC -> "docx"
-            FileTypes.TYPE_IMAGE -> "png"
+            FileTypes.TYPE_IMAGE_PNG -> "png"
+            FileTypes.TYPE_IMAGE_JPG -> "jpg"
             FileTypes.TYPE_VIDEO -> "mp4"
             FileTypes.TYPE_AUDIO -> "mp3"
             else -> ".raw"
         }
         val fileLocation = File(context.getExternalFilesDir(null)?.path, "${fileModel.fileName}.$ext")
-        fileLocation.parentFile?.createNewFile()
+        fileLocation.parentFile.createNewFile()
         fileLocation.createNewFile()
         if(isNoteEnabled) notificationManager.notify(0, buildNote().build())
         inputStream.use { bufferInputStream ->

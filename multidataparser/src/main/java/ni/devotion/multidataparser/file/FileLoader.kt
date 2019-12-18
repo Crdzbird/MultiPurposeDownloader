@@ -20,8 +20,8 @@ class FileLoader internal constructor(private val context: Context)  {
     private var fileName = ""
     private var isCacheEnabled = false
     private var isNotificationEnabled = false
-    private var notificationChannelId = ""
-    private lateinit var onDownloadResultListener: OnDownloadResult
+    var notificationChannelId = ""
+    lateinit var onDownloadResultListener: OnDownloadResult
     private val executorService: ExecutorService
     private var maxCacheSize: Int = (Runtime.getRuntime().maxMemory() / 1024).toInt()/8
     private val memoryCache: LruCache<String, File>
@@ -60,7 +60,7 @@ class FileLoader internal constructor(private val context: Context)  {
     }
 
     fun setNotificationEnabled(isNotificationEnabled: Boolean, channelId: String): FileLoader {
-        require(channelId.isNotEmpty()){ "FileLoader:setNotificationEnabled - channelId should not be empty" }
+        require(channelId.isNotEmpty()){ throw Exception("FileLoader:setNotificationEnabled - channelId should not be empty") }
         this.isNotificationEnabled = isNotificationEnabled
         this.notificationChannelId = channelId
         return INSTANCE
@@ -69,16 +69,9 @@ class FileLoader internal constructor(private val context: Context)  {
     fun download(fileUrl: String, fileType: FileTypes) {
         this.fileType = fileType
         Log.d(tag, "download")
-        require(fileUrl.isNotEmpty()) { "FileLoader:load - Url should not be empty" }
+        require(fileUrl.isNotEmpty()) { throw Exception("FileLoader:load - Url should not be empty") }
         if(fileName.isEmpty()) fileName = System.currentTimeMillis().toString()
         val file = checkFileInCache(fileUrl)
-        file ?: executorService.submit(FileLoadingThread(
-            Files(
-                fileUrl,
-                fileType,
-                fileName
-            )
-        ))
         file?.let {
             fileLoaderUtility.saveFile(it,
                 Files(
@@ -86,6 +79,14 @@ class FileLoader internal constructor(private val context: Context)  {
                     fileType,
                     fileName
                 ), onDownloadResultListener)
+        } ?: run {
+            executorService.submit(FileLoadingThread(
+                Files(
+                    fileUrl,
+                    fileType,
+                    fileName
+                )
+            ))
         }
     }
 
@@ -95,6 +96,7 @@ class FileLoader internal constructor(private val context: Context)  {
             override fun run() {
                 Log.d(tag, "FileLoadingThread")
                 val filepath = if(isNotificationEnabled) fileLoaderUtility.downloadFileFromURL(fileModel, notificationChannelId, onDownloadResultListener) else fileLoaderUtility.downloadFileFromURL(fileModel, onDownloadResultListener)
+                println(filepath)
                 if(!isCacheEnabled) return
                 memoryCache.put(fileModel.fileUrl, File(filepath!!))
             }

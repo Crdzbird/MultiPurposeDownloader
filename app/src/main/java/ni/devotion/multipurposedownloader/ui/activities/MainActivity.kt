@@ -1,10 +1,13 @@
 package ni.devotion.multipurposedownloader.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
@@ -14,6 +17,7 @@ import ni.devotion.multipurposedownloader.R
 import ni.devotion.multipurposedownloader.adapter.InformationAdapter
 import ni.devotion.multipurposedownloader.adapter.ScrollListener
 import ni.devotion.multipurposedownloader.adapter.interfaces.RecyclerItemInterface
+import ni.devotion.multipurposedownloader.models.Information
 import ni.devotion.multipurposedownloader.ui.viewModel.InformationViewModel
 import ni.devotion.multipurposedownloader.util.GridItemDecoration
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity(), RecyclerItemInterface {
 
     private val informationViewModel: InformationViewModel by viewModel()
+    private val information_list: MutableList<Information> = ArrayList()
     private lateinit var skeleton: Skeleton
     lateinit var scrollListener: ScrollListener
     private val informationAdapter: InformationAdapter by lazy { InformationAdapter(this) }
@@ -39,21 +44,21 @@ class MainActivity : AppCompatActivity(), RecyclerItemInterface {
         informationViewModel.uiState.observe(this, Observer {
             val dataState = it ?: return@Observer
             if (!dataState.showProgress){
-                scrollListener.isLoading = true
                 displayHideSkeleton(hide = true)
-            }else{
-                scrollListener.isLoading = false
             }
             if (dataState.result != null && !dataState.result.consumed){
                 dataState.result.consume()?.let { list_information ->
                     if(list_information.isEmpty()){
+                        information_list.addAll(list_information)
 //                        rv_information.visibility = View.GONE
 //                        playAnimation(R.raw.empty)
                     } else {
+                        information_list.addAll(list_information)
 //                        animationContainer.cancelAnimation()
 //                        animationContainer.visibility = View.GONE
 //                        rv_information.visibility = View.VISIBLE
-                        informationAdapter.submitList(list_information)
+                        informationAdapter.submitList(information_list)
+                        informationAdapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -95,7 +100,8 @@ class MainActivity : AppCompatActivity(), RecyclerItemInterface {
     }
 
 
-    override fun onItemClicked(position: Int) {
+    override fun onItemClicked(information: Information) {
+        startActivity(Intent(this, DetailActivity::class.java))
     }
 
     override fun onLoadMore() {

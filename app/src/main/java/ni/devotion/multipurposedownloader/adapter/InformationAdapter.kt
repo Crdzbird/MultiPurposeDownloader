@@ -6,7 +6,7 @@ import ni.devotion.multipurposedownloader.adapter.interfaces.RecyclerItemInterfa
 import ni.devotion.multipurposedownloader.models.Information
 import ni.devotion.multipurposedownloader.ui.viewHolder.InformationViewHolder
 
-class InformationAdapter(var recyclerItemInterface: RecyclerItemInterface) : ListAdapter<Information, InformationViewHolder>(DIFF_CALLBACK){
+class InformationAdapter(private val recyclerItemInterface: RecyclerItemInterface) : ListAdapter<Information, InformationViewHolder>(DIFF_CALLBACK){
     companion object{
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Information>() {
             override fun areItemsTheSame(oldItem: Information, newItem: Information) = oldItem.id == newItem.id

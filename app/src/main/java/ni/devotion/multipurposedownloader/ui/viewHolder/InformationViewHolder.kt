@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.information_content.*
+import kotlinx.android.synthetic.main.information_layout.*
 import ni.devotion.multidataparser.selector.MultiDataParser
 import ni.devotion.multipurposedownloader.R
 import ni.devotion.multipurposedownloader.adapter.interfaces.RecyclerItemInterface
@@ -21,6 +22,9 @@ class InformationViewHolder constructor(override val containerView: View) : Recy
         informationImage?.let { MultiDataParser().obtainImage(containerView.context).load(it, information.urls.small) }
         total_likes.text = containerView.context.getString(R.string.likes, information.likes)
         informationImage.layoutParams.height = ImageSizer().getRandomIntInRange(250, 180)
+        cardInformation.setOnClickListener {
+            recyclerItemInterface.onItemClicked(information)
+        }
     }
 
     companion object {

@@ -9,8 +9,8 @@ import android.os.Process
 import android.util.Log
 import ni.devotion.multidataparser.R
 import ni.devotion.multidataparser.`interface`.OnDownloadResult
-import ni.devotion.multidataparser.model.FileTypes
-import ni.devotion.multidataparser.model.Files
+import ni.devotion.multidataparser.model.Files.FileTypes
+import ni.devotion.multidataparser.model.Files.Files
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -18,7 +18,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.ThreadFactory
 
-class FileManager(val context: Context) {
+class FileManager(private val context: Context) {
     private val tag = "ttt FileManager"
     private var isNoteEnabled = false
     private var channelId = ""

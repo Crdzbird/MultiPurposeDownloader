@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.util.LruCache
 import ni.devotion.multidataparser.`interface`.OnDownloadResult
-import ni.devotion.multidataparser.model.FileTypes
-import ni.devotion.multidataparser.model.Files
+import ni.devotion.multidataparser.model.Files.FileTypes
+import ni.devotion.multidataparser.model.Files.Files
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -72,9 +72,20 @@ class FileLoader internal constructor(private val context: Context)  {
         require(fileUrl.isNotEmpty()) { "FileLoader:load - Url should not be empty" }
         if(fileName.isEmpty()) fileName = System.currentTimeMillis().toString()
         val file = checkFileInCache(fileUrl)
-        file ?: executorService.submit(FileLoadingThread(Files(fileUrl, fileType, fileName)))
+        file ?: executorService.submit(FileLoadingThread(
+            Files(
+                fileUrl,
+                fileType,
+                fileName
+            )
+        ))
         file?.let {
-            fileLoaderUtility.saveFile(it, Files(fileUrl, fileType, fileName), onDownloadResultListener)
+            fileLoaderUtility.saveFile(it,
+                Files(
+                    fileUrl,
+                    fileType,
+                    fileName
+                ), onDownloadResultListener)
         }
     }
 

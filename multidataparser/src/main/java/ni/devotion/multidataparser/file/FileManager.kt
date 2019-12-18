@@ -19,7 +19,6 @@ import java.net.URL
 import java.util.concurrent.ThreadFactory
 
 class FileManager(private val context: Context) {
-    private val tag = "ttt FileManager"
     private var isNoteEnabled = false
     private var channelId = ""
     private lateinit var onDownloadResultListener: OnDownloadResult
@@ -46,7 +45,6 @@ class FileManager(private val context: Context) {
     }
 
     fun saveFile(file: File, fileModel: Files, onDownloadResultListener: OnDownloadResult): String{
-        Log.d(tag, "path: " + context.getExternalFilesDir(null)?.path)
         val filetosave = File(context.getExternalFilesDir(null)?.path, fileModel.fileName)
         filetosave.parentFile?.createNewFile()
         filetosave.createNewFile()
@@ -74,10 +72,9 @@ class FileManager(private val context: Context) {
             FileTypes.TYPE_IMAGE -> "png"
             FileTypes.TYPE_VIDEO -> "mp4"
             FileTypes.TYPE_AUDIO -> "mp3"
-            else -> ".file"
+            else -> ".raw"
         }
         val fileLocation = File(context.getExternalFilesDir(null)?.path, "${fileModel.fileName}.$ext")
-        Log.d(tag, "filepath: ${fileLocation.path}")
         fileLocation.parentFile?.createNewFile()
         fileLocation.createNewFile()
         if(isNoteEnabled) notificationManager.notify(0, buildNote().build())

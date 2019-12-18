@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ni.devotion.multipurposedownloader.adapter.interfaces.RecyclerItemInterface
+import java.util.*
+
 
 class ScrollListener(layoutManager: RecyclerView.LayoutManager, val recyclerItemInterface: RecyclerItemInterface) : RecyclerView.OnScrollListener() {
 
@@ -36,7 +38,8 @@ class ScrollListener(layoutManager: RecyclerView.LayoutManager, val recyclerItem
         totalItemCount = mLayoutManager.itemCount
         when (mLayoutManager) {
             is StaggeredGridLayoutManager -> {
-                val lastVisibleItemPositions = (mLayoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(null)
+                val lastVisibleItemPositions = (Objects.requireNonNull(recyclerView.layoutManager) as StaggeredGridLayoutManager).findLastVisibleItemPositions(null)
+                //val lastVisibleItemPositions = (mLayoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(null)
                 lastVisibleItem = getLastVisibleItem(lastVisibleItemPositions)
             }
             is GridLayoutManager -> {

@@ -30,7 +30,7 @@ class DetailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             MultiDataParser().obtainFile(context)
-                .setFileName("HOLA-${System.currentTimeMillis()}")
+                .setFileName("{System.currentTimeMillis()}")
                 .setNotificationEnabled(true, getString(R.string.app_name))
                 .setOnDownloadResultListener(object : OnDownloadResult {
                     override fun onSuccess(filePath: String) {

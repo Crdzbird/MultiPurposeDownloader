@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import kotlin.math.pow
 
+@Suppress("DEPRECATION")
 fun Context.isOnline(): Boolean {
     val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo = connectivityManager.activeNetworkInfo

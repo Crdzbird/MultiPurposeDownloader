@@ -18,6 +18,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.ThreadFactory
 
+@Suppress("DEPRECATION")
 class FileManager(private val context: Context) {
     private var isNoteEnabled = false
     private var channelId = ""
@@ -73,10 +74,9 @@ class FileManager(private val context: Context) {
             FileTypes.TYPE_IMAGE_JPG -> "jpg"
             FileTypes.TYPE_VIDEO -> "mp4"
             FileTypes.TYPE_AUDIO -> "mp3"
-            else -> ".raw"
         }
         val fileLocation = File(context.getExternalFilesDir(null)?.path, "${fileModel.fileName}.$ext")
-        fileLocation.parentFile.createNewFile()
+        fileLocation.parentFile?.createNewFile()
         fileLocation.createNewFile()
         if(isNoteEnabled) notificationManager.notify(0, buildNote().build())
         inputStream.use { bufferInputStream ->
@@ -95,6 +95,7 @@ class FileManager(private val context: Context) {
         }
         return fileLocation.absolutePath
     }
+
 
     fun buildNote(): Builder{
         val builder = if(VERSION.SDK_INT >= VERSION_CODES.O) Builder(context, channelId) else Builder(context)

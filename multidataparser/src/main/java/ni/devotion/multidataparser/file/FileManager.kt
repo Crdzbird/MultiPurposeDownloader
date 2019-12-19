@@ -74,6 +74,8 @@ class FileManager(private val context: Context) {
             FileTypes.TYPE_IMAGE_JPG -> "jpg"
             FileTypes.TYPE_VIDEO -> "mp4"
             FileTypes.TYPE_AUDIO -> "mp3"
+            FileTypes.TYPE_ZIP -> "zip"
+            FileTypes.TYPE_RAR -> "rar"
         }
         val fileLocation = File(context.getExternalFilesDir(null)?.path, "${fileModel.fileName}.$ext")
         fileLocation.parentFile?.createNewFile()

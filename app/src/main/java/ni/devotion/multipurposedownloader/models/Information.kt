@@ -1,5 +1,7 @@
 package ni.devotion.multipurposedownloader.models
 
+import java.io.Serializable
+
 data class Information(
     val categories: List<Category> = listOf(),
     val color: String = "", // #DCE0E4
@@ -13,4 +15,4 @@ data class Information(
     val urls: Urls = Urls(),
     val user: User = User(),
     val width: Int = 0 // 6000
-)
+):Serializable

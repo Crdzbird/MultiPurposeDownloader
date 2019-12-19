@@ -35,6 +35,7 @@ object Versions {
     const val coilTransformation = "0.0.3"
 
     const val room = "1.1.1"
+    const val maven = "2.1"
 
     const val skeleton = "2.0.0"
     const val materialDrawer = "7.0.0-rc08"
@@ -46,6 +47,10 @@ object Versions {
     const val typeface = "3.0.1.4.original-kotlin@aar"
     const val iconicTypeface = "2.2.0.6-kotlin@aar"
     const val fontAwesomeTypeface = "5.9.0.0-kotlin@aar"
+}
+
+object Github {
+    val maven = "com.github.dcendents:android-maven-gradle-plugin:${Versions.maven}"
 }
 
 object Room {

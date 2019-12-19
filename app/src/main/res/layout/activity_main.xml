@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_information"
+
+    <fragment
+        android:id="@+id/navigationHost"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/main_navigation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:scrollbarStyle="outsideInset"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/information_layout"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

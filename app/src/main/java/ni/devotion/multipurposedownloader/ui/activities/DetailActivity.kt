@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.navigation.navArgs
 import kotlinx.android.synthetic.main.activity_detail.*
 import ni.devotion.multidataparser.`interface`.OnDownloadResult
 import ni.devotion.multidataparser.file.FileLoader
@@ -14,23 +15,30 @@ import ni.devotion.multidataparser.model.Files.FileTypes
 import ni.devotion.multidataparser.selector.MultiDataParser
 import ni.devotion.multipurposedownloader.R
 import ni.devotion.multipurposedownloader.base.BaseApplication.Companion.context
+import ni.devotion.multipurposedownloader.models.Information
 
 class DetailActivity : AppCompatActivity() {
+
+    private lateinit var information: Information
+    private val detailArgs: DetailActivityArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        information = detailArgs.information
 
-        var bundle :Bundle ?=intent.extras
-        var url = bundle!!.getString("url") // 1
+        informationDetailImage?.let { MultiDataParser().obtainImage(context).load(it, information.urls.regular) }
+        informationDetailCreationDate.text = information.created_at
+        informationDetailUsername.text = information.user.name
+        informationDetailLikes.text = context.getString(R.string.likes, information.likes)
         btnDownload.setOnClickListener {
             if(!hasRequiredPermissions()) {
                 askPermissions()
                 return@setOnClickListener
             }
             MultiDataParser().obtainFile(context)
-                .setFileName("{System.currentTimeMillis()}")
+                .setFileName("${information.id}-${System.currentTimeMillis()}")
                 .setNotificationEnabled(true, getString(R.string.app_name))
                 .setOnDownloadResultListener(object : OnDownloadResult {
                     override fun onSuccess(filePath: String) {
@@ -45,7 +53,7 @@ class DetailActivity : AppCompatActivity() {
                         }
                     }
                 })
-                .download(url!!, FileTypes.TYPE_IMAGE_JPG)
+                .download(information.urls.regular, FileTypes.TYPE_IMAGE_JPG)
         }
     }
 

@@ -1,4 +1,6 @@
 # MultiPurposeDownloader
+[![](https://jitpack.io/v/Crdzbird/MultiPurposeDownloader.svg)](https://jitpack.io/#Crdzbird/MultiPurposeDownloader)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://octopress.mit-license.org)
 
 This library was created to handle the tedious issues of file management and images display.
 

@@ -41,6 +41,14 @@ MultiDataParser().obtainFile(context)
 imageWidget?.let { MultiDataParser().obtainImage(context).load(it, url) }
 ```
 
+## DEMO
+if you wanna see the library working, please check the demo app, the stack of technologies used are:
+
+ - [x] Jetpack Navigation
+ - [x] Coroutines
+ - [x] Dependecy Injection with Koin
+ - [x] LiveData
+          
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

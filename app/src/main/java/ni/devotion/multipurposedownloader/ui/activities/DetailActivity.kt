@@ -20,6 +20,10 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+
+        var bundle :Bundle ?=intent.extras
+        var url = bundle!!.getString("url") // 1
         btnDownload.setOnClickListener {
             if(!hasRequiredPermissions()) {
                 askPermissions()
@@ -41,7 +45,7 @@ class DetailActivity : AppCompatActivity() {
                         }
                     }
                 })
-                .download("https://images.unsplash.com/photo-1464550883968-cec281c19761?ixlib=rb-0.3.5\\u0026q=80\\u0026fm=jpg\\u0026crop=entropy\\u0026w=1080\\u0026fit=max\\u0026s=1881cd689e10e5dca28839e68678f432", FileTypes.TYPE_IMAGE_JPG)
+                .download(url!!, FileTypes.TYPE_IMAGE_JPG)
         }
     }
 

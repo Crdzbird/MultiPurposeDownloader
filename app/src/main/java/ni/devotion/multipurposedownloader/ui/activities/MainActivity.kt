@@ -101,6 +101,8 @@ class MainActivity : AppCompatActivity(), RecyclerItemInterface {
 
 
     override fun onItemClicked(information: Information) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("url", information.urls.regular)
         startActivity(Intent(this, DetailActivity::class.java))
     }
 
